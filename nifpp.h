@@ -56,7 +56,12 @@
 namespace nifpp
 {
 
-class badarg{};
+class badarg{
+public:
+    badarg(){}
+    badarg(std::string message) : message(message) {}
+    std::string message;
+};
 
 struct TERM
 {
@@ -1124,6 +1129,15 @@ void get_throws(ErlNifEnv *env, ERL_NIF_TERM term, T &t)
     if(!get(env, term, t))
     {
         throw badarg();
+    }
+}
+
+template<typename T>
+void get_throws(ErlNifEnv *env, ERL_NIF_TERM term, T &t, std::string message)
+{
+    if(!get(env, term, t))
+    {
+        throw badarg(message);
     }
 }
 
